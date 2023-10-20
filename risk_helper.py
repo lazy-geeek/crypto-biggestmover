@@ -38,6 +38,9 @@ phemex_config = {
 phemex = ccxt.phemex(phemex_config)
 phemex.set_sandbox_mode(True)
 
+bal = phemex.fetch_balance()
+pprint(bal)
+
 def max_daily_trades():
     
     max = max_daily_trades
@@ -47,4 +50,4 @@ def max_daily_trades():
     pprint(closed_df)
     
 
-max_daily_trades()
+# max_daily_trades()
