@@ -20,8 +20,7 @@ def ask_bid(symbol=symbol):
 
     ob = onecall.get_orderbook(symbol,False)
     ask = ob['result']['book']['asks'][0][0]
-    bid = ob['result']['book']['bids'][0][0]
-    pprint(bid)
+    bid = ob['result']['book']['bids'][0][0]    
     
     return ask, bid
 
@@ -32,9 +31,12 @@ def bot():
 
     #onecall.limit_order(symbol, onecall.BUY_SIDE, size, bid)
     #onecall.limit_order(symbol, onecall.SELL_SIDE, size, ask)
-    
+
+    print(ask)
+    print(bid)
 
 # identify biggest movers % up and down
 
+bot()
 
 
