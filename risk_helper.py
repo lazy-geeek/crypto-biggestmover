@@ -1,4 +1,3 @@
-import ccxt
 import math
 import pandas as pd
 import time, schedule
@@ -27,16 +26,6 @@ tp_spread = 2
 target_multiple = 3
 
 #################################################
-
-phemex_config = {
-    'enableRateLimit': True,
-    'apiKey': config("PHEMEX_TESTNET_ID"),
-    'secret': config("PHEMEX_TESTNET_SECRET"),
-    #'test': True    
-    }
-
-phemex = ccxt.phemex(phemex_config)
-phemex.set_sandbox_mode(True)
 
 symbol = 'uBTCUSD'
 size = 1 
