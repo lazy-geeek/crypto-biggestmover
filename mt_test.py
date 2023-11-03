@@ -10,7 +10,8 @@ tf = mt.TIMEFRAME_M5
 starting_point = datetime.now()
 no_of_candles = 10000
 
-rates = mt.copy_rates_from(ticker, tf, starting_point, no_of_candles)
+# rates = mt.copy_rates_from(ticker, tf, starting_point, no_of_candles)
+rates = mt.copy_ticks_from(ticker, starting_point, no_of_candles, mt.COPY_TICKS_ALL)
 ohlc = pd.DataFrame(rates)
 ohlc["time"] = pd.to_datetime(ohlc["time"], unit="s")
 

@@ -1,7 +1,6 @@
 import pandas as pd
 
 from exchange import exchange, ask_bid
-from ta.momentum import *
 from pprint import pprint
 
 limit = 100
