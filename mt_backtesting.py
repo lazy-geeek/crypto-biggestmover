@@ -11,6 +11,8 @@ from backtesting_strategies import SMAStrategy, RsiOscillator
 
 # https://discord.com/channels/1009931981997473823/1110858505067442186/1159963245982011552
 
+# MOJO Language -> 68000x schneller als Python
+
 mp.set_start_method("spawn")
 
 symbol = "EURUSD"
