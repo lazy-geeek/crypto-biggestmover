@@ -9,9 +9,6 @@ from pprint import pprint
 
 from backtesting_strategies import SMAStrategy, RsiOscillator
 
-# https://code.visualstudio.com/docs/remote/wsl
-# https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-vscode
-# https://ubuntu.com/tutorials/working-with-visual-studio-code-on-ubuntu-on-wsl2#4-install-the-remote-development-extension
 # https://discord.com/channels/1009931981997473823/1110858505067442186/1159963245982011552
 
 mp.set_start_method("spawn")

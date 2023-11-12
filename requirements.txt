@@ -1,11 +1,11 @@
 backtesting==0.3.3
 backtrader==1.9.78.123
 ccxt==4.1.13
-MetaTrader5==5.0.45
+#MetaTrader5
 numpy==1.26.1
 onecall==1.0.12
 pandas==2.1.2
 python-decouple==3.8
 schedule==1.2.1
-TA_Lib==0.4.19
+#TA_Lib==0.4.19
 tqdm

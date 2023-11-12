@@ -4,7 +4,6 @@ import pandas as pd
 from backtesting import Strategy
 from backtesting.lib import crossover
 
-
 class RsiOscillator(Strategy):
     upper_bound = 70
     lower_bound = 30
@@ -52,6 +51,8 @@ class SMAStrategy(Strategy):
 class RSIVWAPRSI(Strategy):
     # https://www.youtube.com/watch?v=FVSfN3_Xtqs&list=PLu5PUxcrztwWLK5SMyOsdtY9udo_5enBQ&index=4
     # TODO RSI-VWAP RSI Strategy aus Video Markus Adrian
+    # Source Code is available on Tradingview
+    # https://www.youtube.com/watch?v=nF3id-x7gY0
 
     def init(self):
         pass
