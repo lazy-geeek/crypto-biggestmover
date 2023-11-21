@@ -2,8 +2,7 @@ import zmq
 
 from decouple import config
 
-login = config("HOST")
-
+host = config("HOST")
 
 class MTraderAPI:
     def __init__(self, host=None):
@@ -201,4 +200,4 @@ class MTraderAPI:
         self._push_chart_data(message)
 
 
-mt = MTraderAPI()
+mt = MTraderAPI(host=host)

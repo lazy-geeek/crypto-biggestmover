@@ -3,7 +3,10 @@ import threading
 import pandas as pd
 import datetime
 import time
+import multiprocessing as mp
 
+from backtesting import Backtest
+from backtesting_strategies import SMAStrategy, RsiOscillator
 from mt_socket import mt
 from pprint import pprint
 
@@ -11,8 +14,6 @@ symbol = "EURUSD"
 tf = "M5"
 date_time = datetime.datetime(2023, 7, 1, 0, 0)
 fromDate = time.mktime(date_time.timetuple())
-
-# mt.construct_and_send(action="RESET")
 
 response = mt.construct_and_send(action="HISTORY", actionType="DATA", symbol=symbol, chartTF=tf, fromDate=fromDate)
 df = pd.DataFrame(response['data'])
@@ -29,25 +30,19 @@ columns={
 }
 df.rename(columns=columns, inplace=True)
 
-pprint(df)
+# pprint(df)
+
+bt = Backtest(df, RsiOscillator, cash=100000, commission=0.00007)
+
 """
-mt.construct_and_send(action="RESET")
-mt.construct_and_send(action="CONFIG", symbol="AUDUSD", chartTF="M1")
-mt.construct_and_send(action="CONFIG", symbol="EURUSD", chartTF="M1")
-
-def _t_livedata():
-    socket = mt.live_socket()
-    while True:
-        try:
-            last_candle = socket.recv_json()
-        except zmq.ZMQError:
-            raise zmq.NotDone("Live data ERROR")
-        print(last_candle)
-
-
-t = threading.Thread(target=_t_livedata, daemon=True)
-t.start()
-
-while True:
-    pass
+stats = bt.optimize(
+    upper_bound=range(50, 85, 5),
+    lower_bound=range(15, 45, 5),
+    rsi_window=range(10, 30, 2),
+    maximize="Equity Final [$]",
+)
 """
+stats = bt.run()
+
+print(stats)
+
