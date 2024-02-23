@@ -1,0 +1,1 @@
+#TODO Get Trading Strategy PDFs from Google Scholar

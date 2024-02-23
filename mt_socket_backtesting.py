@@ -34,15 +34,15 @@ df.rename(columns=columns, inplace=True)
 
 bt = Backtest(df, RsiOscillator, cash=100000, commission=0.00007)
 
-"""
+
 stats = bt.optimize(
-    upper_bound=range(50, 85, 5),
-    lower_bound=range(15, 45, 5),
-    rsi_window=range(10, 30, 2),
+    upper_bound=range(50, 85, 1),
+    lower_bound=range(15, 45, 1),
+    rsi_window=range(2, 50, 1),
     maximize="Equity Final [$]",
 )
-"""
-stats = bt.run()
+
+# stats = bt.run()
 
 print(stats)
-
+pprint(stats["_strategy"])
