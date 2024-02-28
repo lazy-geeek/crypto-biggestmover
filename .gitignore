@@ -166,3 +166,6 @@ cython_debug/
 pyvenv.cfg
 lib64
 share/xyzservices/providers.json
+openai_assistants/bt_code_event/
+openai_assistants/strategies_event/
+openai_assistants/strat_ideas.txt

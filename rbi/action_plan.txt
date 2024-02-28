@@ -1,0 +1,26 @@
+Installation Dagobah
+- WSL2
+- Ollama
+- LM Studio
+
+- Research trading strategies and summarize them
+  - Watch / transcribe Youtube videos
+  - Read Google Scholar PDFs & Posts
+  - Listen to Podcasts
+  - Read Blogposts
+  - Research Internet in general
+
+- Save research in knowledge database
+
+- Let AI create trading strategies out of knowledge database
+
+- Let AI rate the quality of the created trading strategies
+
+- Create code from the best rated trading strategies
+  - Python backtesting.py 
+  - Tradingview Pinescript
+  - Metatrader MQL5
+
+- Backtest the coded strategies
+
+- Check and rate the backtesting results

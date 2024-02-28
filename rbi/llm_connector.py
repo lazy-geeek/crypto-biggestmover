@@ -5,33 +5,16 @@ from openai import OpenAI
 import time
 import re
 from datetime import datetime
-import requests
-from io import BytesIO
-import PyPDF2
+
 from youtube_transcript_api import YouTubeTranscriptApi
 import os
 
+client = OpenAI(base_url=config("base_url"),api_key="")
+
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 
-client = OpenAI(api_key=config("openai_key"))
-model='gpt-3.5-turbo-0125'
-
-def save_assistant_id(assistant_id, filename):
-    filepath = curr_dir + f'/ids/{filename}'
-    with open(filepath, 'w') as file:
-        file.write(assistant_id)
-
-def check_existing_assistant_id(filename):
-    filepath = curr_dir + f'/ids/{filename}'
-    if os.path.exists(filepath):
-        with open(filepath, 'r') as file:
-            assistant_id = file.read().strip()
-        if assistant_id:
-            return assistant_id
-    return None
-
 def create_and_run_assistant(name, instructions, model, content, filename):
-    assistant_id = check_existing_assistant_id(filename)
+    
     if assistant_id:
         print(f"Using existing assistant with ID: {assistant_id}")
     else:
@@ -108,36 +91,24 @@ def extract_assistant_output(messages):
             output += message.content[0].text.value + "\n"
     return output.strip()
 
+#TODO Use Youtube Video Name or PDF File Name as result files names
+
 def create_and_run_data_analysis(trading_idea):
     filename = 'strategy_assistant.txt'
     data_analysis_output = create_and_run_assistant(
         name='Strategy Creator AI',
         instructions='Create a trading strategy based on the given trading idea.',
-        model=model,
+        model="local-model",
         content=f"Create a trading strategy using {trading_idea}. The strategy should be detailed enough for another AI to code a backtest. Output the instructions for the strategy, assuming that another AI will then code the backtest. so output precise instructions for the other ai to build the backtest. THE ONLY OUTPUT YOU WILL MAKE IS THE STRATEGY INSTRUCTIONS FOR THE OTHER AI WHO WILL CODE THE BACKTEST. DO NOT OUTPUT ANYTHING ELSE. DO NOT CODE",
         filename=filename
     )
     if data_analysis_output:
         filename_base = generate_filename(data_analysis_output, 'txt').split('.')[0]
-        save_output_to_file(data_analysis_output, data_analysis_output, curr_dir + '/strategies_event', 'txt')
+        save_output_to_file(data_analysis_output, data_analysis_output, curr_dir + '/strategies', 'txt')
         return data_analysis_output, filename_base
     else:
         print(f"No strategy output received for {trading_idea}.")
         return None, None
-
-def create_and_run_backtest(strategy_output, trading_idea, filename_base):
-    filename = 'backtest_assistant.txt'
-    backtest_output = create_and_run_assistant(
-        name='Backtest Coder AI',
-        instructions='Code a backtest in python for the provided trading strategy using module backtesting.py, output only the code of the backtest, do not execute the backtest',
-        model=model,
-        content=f"Strategy Output: {strategy_output}. Please use pyhton with module backtesting.py to code this strategy. YOUR MISSION IS TO TAKE THE STRATEGY AND CODE A BACKTEST USING BACKTESTING.PY -- ONLY OUTPUT THE PYTHON BACKTEST CODE, DO NOT EXECUTE THE BACKTEST",
-        filename=filename
-    )
-    if backtest_output:
-        save_output_to_file(backtest_output, strategy_output, curr_dir + '/bt_code_event', 'py')
-    else:
-        print(f"No backtest output received for {trading_idea}.")
 
 def get_youtube_transcript(video_id):
     try:
@@ -147,27 +118,11 @@ def get_youtube_transcript(video_id):
     except Exception as e:
         print(f"Error fetching transcript: {e}")
         return None
-    
-#TODO PDF OCR to Text
-
-def get_pdf_text(url):
-    try:
-        response = requests.get(url)
-        pdf = PyPDF2.PdfReader(BytesIO(response.content))
-        text = ""
-        for page in range(len(pdf.pages)):
-            text += pdf.pages[page].extract_text() + "\n"
-        return text
-    except PyPDF2.errors.PdfReadError:
-        print(f"Error reading PDF from {url}")
-        return None
 
 def process_trading_ideas(ideas_list):
     for idea in ideas_list:
         print(f"Processing trading idea: {idea}")
-        strategy_output, filename_base = create_and_run_data_analysis(idea)
-        if strategy_output:
-            create_and_run_backtest(strategy_output, idea, filename_base)
+        strategy_output, filename_base = create_and_run_data_analysis(idea)        
 
 def read_trading_ideas_from_file(file_path):
     with open(file_path, 'r') as file:
@@ -175,22 +130,13 @@ def read_trading_ideas_from_file(file_path):
 
 def classify_and_process_idea(idea):
     youtube_pattern = r"(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=)?([a-zA-Z0-9\-_]+)"
-    pdf_pattern = r"(https?:\/\/)?([\w\d]+\.)?([\w\d]+)\.(pdf)"
-
-    youtube_match = re.match(youtube_pattern, idea)
-    pdf_match = re.match(pdf_pattern, idea)
+    youtube_match = re.match(youtube_pattern, idea)    
 
     if youtube_match:
         video_id = youtube_match.groups()[-1]
         transcript = get_youtube_transcript(video_id)
         if transcript:
             process_trading_ideas([transcript])
-    elif pdf_match:
-        pdf_text = get_pdf_text(idea)
-        if pdf_text:
-            process_trading_ideas([pdf_text])
-    else:
-        process_trading_ideas([idea])
 
 def main_idea_processor(file_path):
     global run_counter
