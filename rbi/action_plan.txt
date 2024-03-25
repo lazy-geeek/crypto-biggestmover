@@ -1,3 +1,6 @@
+1. -> WSL create local Ollama Model with Crew AI settings -> Doku 
+
+
 - Research trading strategies and summarize them
   - Watch / transcribe Youtube videos
   - Read Google Scholar PDFs & Posts

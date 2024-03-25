@@ -35,7 +35,7 @@ class CustomAgents():
     
     def __init__(self):
         self.llm = ChatOpenAI(
-            model="crewai_mixtral",
+            model="mixtral",
             base_url=config("ollama_url"),
             api_key="NA"
         )        

@@ -47,6 +47,24 @@ class CustomTasks:
     def __tip_section(self):
         return "If you do your BEST WORK, I'll give you a $10,000 commission!"
 
+    def summarize_youtube_video(self, agent, video_url):
+        return Task(
+            description=dedent(
+                f"""
+                **Task**: 
+                Summarize a youtube video
+                **Description**:
+                Summarizing the transcription of a youtube video to get the most important insights.
+                
+                **Parameters**: 
+                - Video URL: {video_url}
+                
+                **Note**: {self.__tip_section()}
+                """
+                ),            
+            agent=agent
+        )
+
     def interview_people(self, agent, interviewed_person):
         return Task(
             description=dedent(
